@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto getEmployeeById(Long employeeId) {
         // employeeRepository extends JpaRepository, which contains a findById()
-        // .orElseThrow(() - If the employee ID doesn’t exist in the database, this throws a custom exception
+        // .orElseThrow() - If the employee ID doesn’t exist in the database, this throws a custom exception
         Employee employee = employeeRepository.findById(employeeId)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Employee does not exist with given id : " + employeeId) 
@@ -66,10 +66,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             .collect( Collectors.toList() );
     }
 
+    // overriding the updateEmployeeById() from the EmployeeService.java class
     @Override
     public EmployeeDto updateEmployeeById(Long employeeId, EmployeeDto employeeToUpdate) {
         // employeeRepository extends JpaRepository, which contains a findById()
-        // .orElseThrow(() - If the employee ID doesn’t exist in the database, this throws a custom exception
+        // .orElseThrow() - If the employee ID doesn’t exist in the database, this throws a custom exception
         Employee employee = employeeRepository.findById(employeeId)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Employee does not exist with given id : " + employeeId)
@@ -85,6 +86,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // Converting updatedEmployee(EmployeeDto)  object to EmployeeDto
         return EmployeeMapper.mapToEmployeeDto(updatedEmployee);
+    }
+
+    // overriding the deleteEmployeeById() from the EmployeeService.java class
+    @Override
+    public void deleteEmployeeById(Long employeeId) {
+        // employeeRepository extends JpaRepository, which contains a findById()
+        // .orElseThrow() - If the employee ID doesn’t exist in the database, this throws a custom exception
+        Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Employee does not exist with given id : " + employeeId)
+        );
+
+        // Delete Emplyee object with given id
+        employeeRepository.deleteById(employeeId);
     }
 
     
