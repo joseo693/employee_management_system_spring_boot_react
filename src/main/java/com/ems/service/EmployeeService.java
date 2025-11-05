@@ -7,10 +7,12 @@ import com.ems.dto.EmployeeDto;
 
 public interface EmployeeService {
 
-    EmployeeDto creaEmployee(EmployeeDto employeeDto);
+    EmployeeDto createEmployee(EmployeeDto employeeDto);
 
     EmployeeDto getEmployeeById(Long employeeId);
 
     List<EmployeeDto> getAllEmployees();
+
+    EmployeeDto updateEmployeeById(Long employeeId, EmployeeDto employeeToUpdate);
 
 } 

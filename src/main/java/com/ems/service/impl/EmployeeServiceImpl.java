@@ -25,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // overriding the creaEmployee() from the EmployeeService.java class
     @Override
-    public EmployeeDto creaEmployee(EmployeeDto employeeDto) {
+    public EmployeeDto createEmployee(EmployeeDto employeeDto) {
 
         // converting EmployeeDto object to Employee
         Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
@@ -41,6 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto getEmployeeById(Long employeeId) {
         // employeeRepository extends JpaRepository, which contains a findById()
+        // .orElseThrow(() - If the employee ID doesn’t exist in the database, this throws a custom exception
         Employee employee = employeeRepository.findById(employeeId)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Employee does not exist with given id : " + employeeId) 
@@ -63,6 +64,27 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employees.stream()
             .map( (employee) -> EmployeeMapper.mapToEmployeeDto(employee))
             .collect( Collectors.toList() );
+    }
+
+    @Override
+    public EmployeeDto updateEmployeeById(Long employeeId, EmployeeDto employeeToUpdate) {
+        // employeeRepository extends JpaRepository, which contains a findById()
+        // .orElseThrow(() - If the employee ID doesn’t exist in the database, this throws a custom exception
+        Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException("Employee does not exist with given id : " + employeeId)
+        );
+
+        // updating the necessary properties from employeeToUpdate(EmployeeDto) into new Employee object
+        employee.setFirstName(employeeToUpdate.getFirstName());
+        employee.setLastName(employeeToUpdate.getLastName());
+        employee.setEmail(employeeToUpdate.getEmail());
+
+        // saving the new Employee object 
+        Employee  updatedEmployee = employeeRepository.save(employee);
+
+        // Converting updatedEmployee(EmployeeDto)  object to EmployeeDto
+        return EmployeeMapper.mapToEmployeeDto(updatedEmployee);
     }
 
     

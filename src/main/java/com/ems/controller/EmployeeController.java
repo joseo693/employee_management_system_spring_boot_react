@@ -7,14 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ems.dto.EmployeeDto;
 import com.ems.service.EmployeeService;
-
-import jakarta.persistence.Converts;
 
 
 
@@ -37,7 +36,7 @@ public class EmployeeController {
     //@RequestBody - automatically converts JSON data from the HTTP request body into a EmployeeDto object using Jackson
     @PostMapping
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
-        EmployeeDto savedEmployee = employeeService.creaEmployee(employeeDto);
+        EmployeeDto savedEmployee = employeeService.createEmployee(employeeDto);
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
 
@@ -59,7 +58,13 @@ public class EmployeeController {
         return ResponseEntity.ok(employees);
     }
     
-    
+    // API to Update Employee by Id
+    @PutMapping("{id}")
+    public ResponseEntity<EmployeeDto> updateEmployeeById(@PathVariable("id") Long employeeId, 
+                                                          @RequestBody EmployeeDto employeeToUpdate) {
+        EmployeeDto employeeDto = employeeService.updateEmployeeById(employeeId, employeeToUpdate);
+        return ResponseEntity.ok(employeeDto);
+    }
 
 
 }
