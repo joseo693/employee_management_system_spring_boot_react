@@ -1,5 +1,7 @@
 package com.ems.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ems.dto.EmployeeDto;
 import com.ems.service.EmployeeService;
+
+import jakarta.persistence.Converts;
+
 
 
 
@@ -29,7 +34,7 @@ public class EmployeeController {
     }
     
     // API to create a new Employee object
-    //@ResponseBody - automatically converts JSON data from the HTTP request body into a EmployeeDto object using Jackson
+    //@RequestBody - automatically converts JSON data from the HTTP request body into a EmployeeDto object using Jackson
     @PostMapping
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
         EmployeeDto savedEmployee = employeeService.creaEmployee(employeeDto);
@@ -43,6 +48,17 @@ public class EmployeeController {
         EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
         return ResponseEntity.ok(employeeDto);
     }
+
+    // API to retrieve all Employees
+    // ResponseEntity<T> - wrapper that represents the entire HTTP response: The body and the status code
+    @GetMapping
+    public ResponseEntity< List<EmployeeDto> > getAllEmployees() {
+        // employeeRepository.findAll() - returns all employees from the database
+        // Converts all Employee objects into EmployeeDto objects
+        List<EmployeeDto> employees = employeeService.getAllEmployees();
+        return ResponseEntity.ok(employees);
+    }
+    
     
 
 

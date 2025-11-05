@@ -1,5 +1,8 @@
 package com.ems.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.ems.dto.EmployeeDto;
@@ -43,6 +46,23 @@ public class EmployeeServiceImpl implements EmployeeService {
                 () -> new ResourceNotFoundException("Employee does not exist with given id : " + employeeId) 
             );
         return EmployeeMapper.mapToEmployeeDto(employee);
+    }
+
+
+    // overriding the getAllEmployees() from the EmployeeService.java class
+    @Override
+    public List<EmployeeDto> getAllEmployees() {
+        // Getting a list of all of the employees
+        List<Employee> employees = employeeRepository.findAll();
+
+        // converting from Employee object to EmployeeDto object
+        // .stream - turns the list into a pipeline of elements that can be processed
+        // .map() - transforms each item in the stream into something else
+        // .collect() - gathers the results of the stream into a List
+        // Collectors.toList() - collects all the transformed DTOs into a list
+        return employees.stream()
+            .map( (employee) -> EmployeeMapper.mapToEmployeeDto(employee))
+            .collect( Collectors.toList() );
     }
 
     
