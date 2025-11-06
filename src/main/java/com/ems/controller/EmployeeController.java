@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +19,11 @@ import com.ems.service.EmployeeService;
 
 
 
-
-//@RestController - marks this class as a RESTful web controller.
-//@RequestMapping - defines a base URL for all endpoints in this controller
+// @CrossOrigin - enables cross-origin resource sharing only for this specific method
+// CrossOrigin - allows frontend (React) to talk to backend (Spring Boot) without errors, since they're on different ports.
+// @RestController - marks this class as a RESTful web controller.
+// @RequestMapping - defines a base URL for all endpoints in this controller
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
